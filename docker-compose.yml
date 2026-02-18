@@ -1,0 +1,52 @@
+services:
+  db:
+    image: postgres:16-alpine
+    container_name: cine-db
+    environment:
+      POSTGRES_DB: cine_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    healthcheck:
+      test: ["CMD-SHELL", "pg_isready -U postgres -d cine_db"]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+
+  app:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: cine-app
+    environment:
+      ASPNETCORE_ENVIRONMENT: Production
+      ConnectionStrings__DefaultConnection: Host=db;Port=5432;Database=cine_db;Username=postgres;Password=postgres
+      Jwt__Issuer: Cine.Web
+      Jwt__Audience: Cine.Mobile
+      Jwt__SecretKey: CHANGE_THIS_SUPER_SECRET_KEY_32CHARS_MIN_12345
+      Jwt__ExpiresMinutes: 120
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - uploads_data:/app/wwwroot/uploads
+
+  caddy:
+    image: caddy:2-alpine
+    container_name: cine-caddy
+    depends_on:
+      - app
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - ./Caddyfile:/etc/caddy/Caddyfile
+      - caddy_data:/data
+      - caddy_config:/config
+
+volumes:
+  db_data:
+  uploads_data:
+  caddy_data:
+  caddy_config:

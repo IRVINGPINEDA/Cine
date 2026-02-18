@@ -1,0 +1,28 @@
+﻿@model Cine.Web.Models.Movie
+@{
+    ViewData["Title"] = "Detalle";
+}
+
+<a asp-action="Index" class="btn btn-link ps-0 mb-3">Volver al catalogo</a>
+
+<div class="row g-4">
+    <div class="col-md-5">
+        @if (!string.IsNullOrWhiteSpace(Model.ImagePath))
+        {
+            <img src="@Model.ImagePath" alt="@Model.Name" class="img-fluid rounded shadow-sm" />
+        }
+        else
+        {
+            <div class="bg-light border rounded p-5 text-center text-muted">Sin imagen</div>
+        }
+    </div>
+    <div class="col-md-7">
+        <h2>@Model.Name</h2>
+        <p class="text-muted">Genero: @Model.Genre</p>
+        <p>@Model.Description</p>
+        <a href="@Model.TrailerUrl" target="_blank" rel="noopener noreferrer" class="btn btn-danger">
+            Ver trailer
+        </a>
+    </div>
+</div>
+

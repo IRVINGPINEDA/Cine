@@ -1,0 +1,45 @@
+﻿@{
+    ViewData["Title"] = "Panel Admin";
+}
+
+<h1 class="mb-4">Panel de Administracion</h1>
+
+<div class="row g-3">
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Registro de Peliculas</h5>
+                <p class="card-text">Crear nuevas peliculas.</p>
+                <a asp-controller="AdminMovies" asp-action="Create" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Consulta de Peliculas</h5>
+                <p class="card-text">Activar, inactivar y modificar.</p>
+                <a asp-controller="AdminMovies" asp-action="Index" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Registro de Clientes</h5>
+                <p class="card-text">Alta y listado de clientes.</p>
+                <a asp-controller="AdminClients" asp-action="Index" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+    <div class="col-md-6 col-lg-3">
+        <div class="card h-100">
+            <div class="card-body">
+                <h5 class="card-title">Registro de Usuarios</h5>
+                <p class="card-text">Alta, edicion y control de acceso.</p>
+                <a asp-controller="AdminUsers" asp-action="Index" class="btn btn-primary">Ir</a>
+            </div>
+        </div>
+    </div>
+</div>
+
