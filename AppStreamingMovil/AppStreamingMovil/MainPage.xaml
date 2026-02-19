@@ -1,0 +1,62 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppStreamingMovil.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="24"
+            Spacing="20"
+            HorizontalOptions="Center"
+            VerticalOptions="Center">
+
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="160"
+                WidthRequest="160"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot" />
+
+            <Frame
+                Padding="18"
+                CornerRadius="12"
+                HasShadow="True"
+                HorizontalOptions="Fill">
+                <VerticalStackLayout Spacing="12">
+                    <Label Text="Iniciar sesión" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center" />
+
+                    <Label Text="Correo" />
+                    <Entry
+                        x:Name="correoCliente"
+                        Placeholder="ejemplo@correo.com"
+                        Keyboard="Email" />
+
+                    <Label Text="Contraseña" />
+                    <Entry
+                        x:Name="contrasenaCliente"
+                        Placeholder="Ingrese su contraseña"
+                        IsPassword="True" />
+
+                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                        <CheckBox x:Name="mostrarContrasena" CheckedChanged="ShowPasswordChanged" />
+                        <Label Text="Mostrar contraseña" VerticalOptions="Center" />
+                    </HorizontalStackLayout>
+
+                    <Button
+                        x:Name="iniciarSesion"
+                        Text="Iniciar Sesión"
+                        Clicked="Sesion"
+                        HorizontalOptions="Fill" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Label Text="¿No tienes cuenta? Regístrate." TextColor="Fuchsia" TextDecorations="Underline" HorizontalOptions="Center">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="https://learn.microsoft.com/dotnet/maui/" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

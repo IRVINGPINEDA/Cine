@@ -1,0 +1,48 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppStreamingMovil.MainPage">
+
+    <ScrollView>
+        <VerticalStackLayout
+            Padding="30,0"
+            Spacing="25">
+            <Image
+                Source="dotnet_bot.png"
+                HeightRequest="250"
+                WidthRequest="250"
+                Aspect="AspectFit"
+                SemanticProperties.Description="dot net bot in a submarine number ten" />
+
+            <Label
+                Text="Correo"
+                SemanticProperties.HeadingLevel="Level9"/>
+
+            <Entry
+                x:Name="correoCliente"
+                Placeholder="Example@mail.com"/>
+
+            <Label
+                Text="Contraseña"
+                SemanticProperties.HeadingLevel="Level9"/>
+
+            <Entry
+                x:Name="contrasenaCliente"
+                x:DataType="x:String"
+                Placeholder="Example@mail.com"/>
+                    
+            <Button
+                x:Name="iniciarSesion"
+                Text="Iniciar Sesion" 
+                Clicked="Sesion"
+                HorizontalOptions="Fill" />
+            <Label Text="¿No tienes cuenta? Registrate." TextColor="Fuchsia" TextDecorations="Underline">
+                <Label.GestureRecognizers>
+                    <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="https://learn.microsoft.com/dotnet/maui/" />
+                </Label.GestureRecognizers>
+            </Label>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>
