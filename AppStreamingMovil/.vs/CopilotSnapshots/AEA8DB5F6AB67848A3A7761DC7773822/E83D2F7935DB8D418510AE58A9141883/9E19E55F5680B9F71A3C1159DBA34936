@@ -1,0 +1,43 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="AppStreamingMovil.MoviesPage"
+             Title="Películas">
+
+    <ScrollView>
+        <VerticalStackLayout Padding="12" Spacing="12">
+
+            <Label Text="Películas" FontAttributes="Bold" FontSize="20" HorizontalOptions="Center" />
+
+            <!-- Item template simulado: repetir usando CollectionView en el futuro -->
+
+            <Frame CornerRadius="10" HasShadow="True" Padding="8">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="Jeepers Creepers - Terror" FontAttributes="Bold" />
+                    <HorizontalStackLayout Spacing="8">
+                        <Image Source="jeepers_placeholder.png" WidthRequest="80" HeightRequest="120" Aspect="AspectFill" />
+                        <Frame CornerRadius="10" Padding="8" BorderColor="LightGray">
+                            <Label Text="Trish y Darry, dos hermanos universitarios..." LineBreakMode="WordWrap" WidthRequest="200" />
+                        </Frame>
+                    </HorizontalStackLayout>
+                    <Button Text="Ver" HorizontalOptions="End" BackgroundColor="#007AFF" TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+            <Frame CornerRadius="10" HasShadow="True" Padding="8">
+                <VerticalStackLayout Spacing="8">
+                    <Label Text="¿Y dónde están las rubias? - Comedia" FontAttributes="Bold" />
+                    <HorizontalStackLayout Spacing="8">
+                        <Image Source="rubias_placeholder.png" WidthRequest="80" HeightRequest="120" Aspect="AspectFill" />
+                        <Frame CornerRadius="10" Padding="8" BorderColor="LightGray">
+                            <Label Text="Dos torpes agentes del FBI se hacen pasar por dos chicas..." LineBreakMode="WordWrap" WidthRequest="200" />
+                        </Frame>
+                    </HorizontalStackLayout>
+                    <Button Text="Ver" HorizontalOptions="End" BackgroundColor="#007AFF" TextColor="White" />
+                </VerticalStackLayout>
+            </Frame>
+
+        </VerticalStackLayout>
+    </ScrollView>
+
+</ContentPage>

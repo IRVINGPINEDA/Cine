@@ -33,7 +33,19 @@
                 return;
             }
 
+            // Inicio de sesión simulado exitoso
             await DisplayAlert("Bienvenido", $"Sesión iniciada como {correo}", "Aceptar");
+
+            // Navegar a la página de películas
+            try
+            {
+                await Shell.Current.GoToAsync(nameof(MoviesPage));
+            }
+            catch
+            {
+                // Si la ruta no está registrada por alguna razón, navegar de forma directa
+                await Navigation.PushAsync(new MoviesPage());
+            }
         }
 
         private void ShowPasswordChanged(object? sender, CheckedChangedEventArgs e)

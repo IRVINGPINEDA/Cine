@@ -3,6 +3,10 @@
   "WorkspaceRootPath": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\",
   "Documents": [
     {
+      "AbsoluteMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|b:\\cosasescuela\\ubam\\cosasescuela2026\\nube\\cine\\appstreamingmovil\\appstreamingmovil\\appshell.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
+      "RelativeMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|solutionrelative:appstreamingmovil\\appshell.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+    },
+    {
       "AbsoluteMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|b:\\cosasescuela\\ubam\\cosasescuela2026\\nube\\cine\\appstreamingmovil\\appstreamingmovil\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
       "RelativeMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|solutionrelative:appstreamingmovil\\mainpage.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
     },
@@ -11,8 +15,7 @@
       "RelativeMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|solutionrelative:appstreamingmovil\\mainpage.xaml.cs||{A6C744A8-0E4A-4FC6-886A-064283054674}"
     },
     {
-      "AbsoluteMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|b:\\cosasescuela\\ubam\\cosasescuela2026\\nube\\cine\\appstreamingmovil\\appstreamingmovil\\appshell.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}",
-      "RelativeMoniker": "D:0:0:{9C1D4A4A-F073-2C48-D782-69162EE344C9}|AppStreamingMovil\\AppStreamingMovil.csproj|solutionrelative:appstreamingmovil\\appshell.xaml||{F11ACC28-31D1-4C80-A34B-F4E09D3D753C}"
+      "AbsoluteMoniker": "D:0:0:{A2FE74E1-B743-11D0-AE1A-00A0C90FFFC3}|\u003CMiscFiles\u003E|C:\\Users\\ferna\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-701541942\\MoviesPage.xaml||{8B382828-6202-11D1-8870-0000F87579D2}"
     }
   ],
   "DocumentGroupContainers": [
@@ -22,7 +25,7 @@
       "DocumentGroups": [
         {
           "DockedWidth": 200,
-          "SelectedChildIndex": 4,
+          "SelectedChildIndex": 3,
           "Children": [
             {
               "$type": "Bookmark",
@@ -34,38 +37,50 @@
             },
             {
               "$type": "Document",
-              "DocumentIndex": 2,
+              "DocumentIndex": 3,
+              "Title": "MoviesPage.xaml",
+              "DocumentMoniker": "C:\\Users\\ferna\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-701541942\\MoviesPage.xaml",
+              "ToolTip": "C:\\Users\\ferna\\AppData\\Local\\Temp\\CopilotBaseline\\Deleted\\-701541942\\MoviesPage.xaml",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA==",
+              "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
+              "WhenOpened": "2026-02-20T02:23:18.872Z",
+              "EditorCaption": ""
+            },
+            {
+              "$type": "Document",
+              "DocumentIndex": 0,
               "Title": "AppShell.xaml",
               "DocumentMoniker": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppShell.xaml",
               "RelativeDocumentMoniker": "AppStreamingMovil\\AppShell.xaml",
               "ToolTip": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppShell.xaml",
               "RelativeToolTip": "AppStreamingMovil\\AppShell.xaml",
-              "ViewState": "AgIAAAAAAAAAAAAAAAAAAA4AAAAAAAAAAAAAAA==",
+              "ViewState": "AgIAAAAAAAAAAAAAAAAAAAAAAAAnAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
-              "WhenOpened": "2026-02-18T00:40:38.629Z"
+              "WhenOpened": "2026-02-18T00:40:38.629Z",
+              "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 1,
+              "DocumentIndex": 2,
               "Title": "MainPage.xaml.cs",
               "DocumentMoniker": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\MainPage.xaml.cs",
               "RelativeDocumentMoniker": "AppStreamingMovil\\MainPage.xaml.cs",
               "ToolTip": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\MainPage.xaml.cs",
               "RelativeToolTip": "AppStreamingMovil\\MainPage.xaml.cs",
-              "ViewState": "AgIAABwAAAAAAAAAAAAAACEAAAANAAAAAAAAAA==",
+              "ViewState": "AgIAADEAAAAAAAAAAAAAACEAAAANAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.000738|",
               "WhenOpened": "2026-02-18T00:40:29.928Z",
               "EditorCaption": ""
             },
             {
               "$type": "Document",
-              "DocumentIndex": 0,
+              "DocumentIndex": 1,
               "Title": "MainPage.xaml",
               "DocumentMoniker": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\MainPage.xaml",
               "RelativeDocumentMoniker": "AppStreamingMovil\\MainPage.xaml",
               "ToolTip": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\MainPage.xaml",
               "RelativeToolTip": "AppStreamingMovil\\MainPage.xaml",
-              "ViewState": "AgIAACEAAAAAAAAAAAAUwCcAAABLAAAAAAAAAA==",
+              "ViewState": "AgIAACEAAAAAAAAAAAAUwCcAAAAAAAAAAAAAAA==",
               "Icon": "ae27a6b0-e345-4288-96df-5eaf394ee369.003549|",
               "WhenOpened": "2026-02-18T00:36:55.628Z",
               "EditorCaption": ""
