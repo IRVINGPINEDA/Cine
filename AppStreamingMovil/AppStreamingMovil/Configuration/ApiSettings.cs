@@ -89,12 +89,13 @@ public class ApiSettings
             }
         }
 
-        AddCandidate(Preferences.Default.Get(BaseUrlPreferenceKey, string.Empty));
-
         foreach (var candidate in GetPlatformBaseUrls())
         {
             AddCandidate(candidate);
         }
+
+        // Se agrega al final para no priorizar una URL vieja guardada en desarrollo.
+        AddCandidate(Preferences.Default.Get(BaseUrlPreferenceKey, string.Empty));
 
         return candidates;
     }
@@ -104,14 +105,22 @@ public class ApiSettings
 #if ANDROID
         return
         [
+            "https://caleiro.online", // produccion
+            "https://www.caleiro.online", // produccion (www)
+#if DEBUG
             "http://10.0.2.2",       // docker compose + caddy
             "http://10.0.2.2:5255"   // dotnet run
+#endif
         ];
 #else
         return
         [
+            "https://caleiro.online", // produccion
+            "https://www.caleiro.online", // produccion (www)
+#if DEBUG
             "http://localhost",      // docker compose + caddy
             "http://localhost:5255"  // dotnet run
+#endif
         ];
 #endif
     }

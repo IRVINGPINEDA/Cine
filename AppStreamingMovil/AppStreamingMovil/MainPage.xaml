@@ -86,39 +86,6 @@
 
         <ScrollView>
             <VerticalStackLayout Padding="20,18,20,28" Spacing="16">
-                <Border Style="{StaticResource CardBorderStyle}" Background="#22FFFFFF">
-                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
-                        <Label Grid.Row="0"
-                               Grid.Column="0"
-                               Text="Cine Movil"
-                               TextColor="White"
-                               FontSize="28"
-                               FontAttributes="Bold" />
-
-                        <Border Grid.Row="0"
-                                Grid.Column="1"
-                                Background="#2234D399"
-                                Stroke="#5534D399"
-                                Padding="10,6"
-                                VerticalOptions="Start">
-                            <Border.StrokeShape>
-                                <RoundRectangle CornerRadius="20" />
-                            </Border.StrokeShape>
-                            <Label Text="Auto local"
-                                   FontSize="12"
-                                   FontAttributes="Bold"
-                                   TextColor="#9AF1DD" />
-                        </Border>
-
-                        <Label Grid.Row="1"
-                               Grid.ColumnSpan="2"
-                               Text="Conecta automaticamente a tu API local (Docker/Caddy o dotnet run) y muestra el catalogo con imagenes remotas."
-                               TextColor="#C7DEE8"
-                               FontSize="13"
-                               LineBreakMode="WordWrap" />
-                    </Grid>
-                </Border>
-
                 <Border x:Name="loginSection" Style="{StaticResource CardBorderStyle}">
                     <VerticalStackLayout Spacing="12">
                         <Label Text="Iniciar sesion"
@@ -126,15 +93,11 @@
                                FontAttributes="Bold"
                                TextColor="White" />
 
-                        <Label Text="Cliente demo: cliente@demo.com / Cliente123!"
-                               TextColor="#B9D3DF"
-                               FontSize="12" />
-
                         <VerticalStackLayout Spacing="6">
                             <Label Text="Correo" TextColor="#DCEAF0" FontSize="13" />
                             <Entry x:Name="correoCliente"
                                    Style="{StaticResource InputStyle}"
-                                   Placeholder="cliente@demo.com"
+                                   Placeholder="correo@dominio.com"
                                    Keyboard="Email" />
                         </VerticalStackLayout>
 

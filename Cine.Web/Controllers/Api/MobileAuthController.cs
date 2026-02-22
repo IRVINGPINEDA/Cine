@@ -8,6 +8,7 @@ using Cine.Web.Options;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 
@@ -21,15 +22,18 @@ public class MobileAuthController : ControllerBase
     private readonly UserManager<ApplicationUser> _userManager;
     private readonly AppDbContext _dbContext;
     private readonly JwtOptions _jwtOptions;
+    private readonly ILogger<MobileAuthController> _logger;
 
     public MobileAuthController(
         UserManager<ApplicationUser> userManager,
         AppDbContext dbContext,
-        IOptions<JwtOptions> jwtOptions)
+        IOptions<JwtOptions> jwtOptions,
+        ILogger<MobileAuthController> logger)
     {
         _userManager = userManager;
         _dbContext = dbContext;
         _jwtOptions = jwtOptions.Value;
+        _logger = logger;
     }
 
     [HttpPost("login")]
@@ -69,7 +73,18 @@ public class MobileAuthController : ControllerBase
             });
         }
 
-        return Ok(BuildLoginResponse(user));
+        try
+        {
+            return Ok(BuildLoginResponse(user));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generando token JWT en login movil para {Email}", request.Email);
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                message = "Error de configuracion del servidor (JWT)."
+            });
+        }
     }
 
     [HttpPost("register")]
@@ -124,17 +139,40 @@ public class MobileAuthController : ControllerBase
             });
         }
 
-        _dbContext.Clients.Add(new Client
+        try
         {
-            FullName = user.FullName,
-            Email = email,
-            RegisteredAt = DateTime.UtcNow,
-            IsActive = true
-        });
+            _dbContext.Clients.Add(new Client
+            {
+                FullName = user.FullName,
+                Email = email,
+                RegisteredAt = DateTime.UtcNow,
+                IsActive = true
+            });
 
-        await _dbContext.SaveChangesAsync();
+            await _dbContext.SaveChangesAsync();
+        }
+        catch (DbUpdateException ex)
+        {
+            _logger.LogError(ex, "Error guardando cliente de registro movil para {Email}", email);
+            await _userManager.DeleteAsync(user);
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                message = "No se pudo completar el registro en este momento."
+            });
+        }
 
-        return Ok(BuildLoginResponse(user));
+        try
+        {
+            return Ok(BuildLoginResponse(user));
+        }
+        catch (Exception ex)
+        {
+            _logger.LogError(ex, "Error generando token JWT tras registro movil para {Email}", email);
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                message = "Registro completado, pero hubo un error de configuracion JWT. Intenta iniciar sesion mas tarde."
+            });
+        }
     }
 
     private string GenerateJwtToken(ApplicationUser user, DateTime expiresAt)

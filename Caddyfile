@@ -2,7 +2,7 @@
   email {$ACME_EMAIL:admin@example.com}
 }
 
-{$DOMAIN:localhost} {
+caleiro.online, www.caleiro.online {
   encode zstd gzip
 
   header {

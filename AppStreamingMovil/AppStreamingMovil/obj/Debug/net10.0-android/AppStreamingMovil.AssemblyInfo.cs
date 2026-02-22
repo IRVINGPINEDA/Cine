@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("AppStreamingMovil")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+793845210c7d6482105fee976896d7dba544e470")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0+3b2f9294cac4a34de4db71f90b5229347dcda813")]
 [assembly: System.Reflection.AssemblyProductAttribute("AppStreamingMovil")]
 [assembly: System.Reflection.AssemblyTitleAttribute("AppStreamingMovil")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

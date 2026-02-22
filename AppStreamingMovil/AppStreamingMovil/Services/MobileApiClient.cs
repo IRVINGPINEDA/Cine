@@ -108,6 +108,14 @@ public class MobileApiClient : IMobileApiClient
             {
                 return (false, "La configuracion interna del API no tiene un formato valido.");
             }
+            catch (JsonException)
+            {
+                connectivityError = "El API respondio con un formato inesperado.";
+            }
+            catch (Exception)
+            {
+                connectivityError = "Ocurrio un error inesperado al conectar con el API.";
+            }
         }
 
         return (false, connectivityError ?? "No fue posible conectarse al API.");
@@ -160,6 +168,10 @@ public class MobileApiClient : IMobileApiClient
             catch (TaskCanceledException ex)
             {
                 lastConnectivityException = ex;
+            }
+            catch (JsonException ex)
+            {
+                throw new InvalidOperationException("El API respondio con un formato inesperado.", ex);
             }
         }
 

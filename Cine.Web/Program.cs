@@ -39,6 +39,7 @@ builder.Services.ConfigureApplicationCookie(options =>
 
 builder.Services.Configure<JwtOptions>(builder.Configuration.GetSection(JwtOptions.SectionName));
 var jwtOptions = builder.Configuration.GetSection(JwtOptions.SectionName).Get<JwtOptions>() ?? new JwtOptions();
+ValidateJwtOptions(jwtOptions);
 
 builder.Services
     .AddAuthentication()
@@ -92,3 +93,33 @@ app.MapControllerRoute(
     pattern: "{controller=Home}/{action=Index}/{id?}");
 
 app.Run();
+
+static void ValidateJwtOptions(JwtOptions jwtOptions)
+{
+    if (string.IsNullOrWhiteSpace(jwtOptions.Issuer))
+    {
+        throw new InvalidOperationException("Jwt:Issuer no configurado.");
+    }
+
+    if (string.IsNullOrWhiteSpace(jwtOptions.Audience))
+    {
+        throw new InvalidOperationException("Jwt:Audience no configurado.");
+    }
+
+    if (string.IsNullOrWhiteSpace(jwtOptions.SecretKey))
+    {
+        throw new InvalidOperationException("Jwt:SecretKey no configurado.");
+    }
+
+    var secretBytes = Encoding.UTF8.GetByteCount(jwtOptions.SecretKey);
+    if (secretBytes < 32)
+    {
+        throw new InvalidOperationException(
+            $"Jwt:SecretKey demasiado corto ({secretBytes} bytes). Debe ser >= 32 bytes para produccion.");
+    }
+
+    if (jwtOptions.ExpiresMinutes <= 0)
+    {
+        throw new InvalidOperationException("Jwt:ExpiresMinutes debe ser mayor que 0.");
+    }
+}
