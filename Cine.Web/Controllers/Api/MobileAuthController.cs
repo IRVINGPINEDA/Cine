@@ -103,92 +103,103 @@ public class MobileAuthController : ControllerBase
             return ValidationProblem(ModelState);
         }
 
-        var email = request.Email.Trim();
-        var existingUser = await _userManager.FindByEmailAsync(email);
-        if (existingUser is not null)
-        {
-            return Conflict(new { message = "Ya existe una cuenta con ese correo." });
-        }
-
-        var user = new ApplicationUser
-        {
-            UserName = email,
-            Email = email,
-            EmailConfirmed = true,
-            FirstName = request.FirstName.Trim(),
-            LastNamePaternal = request.LastNamePaternal.Trim(),
-            LastNameMaternal = string.IsNullOrWhiteSpace(request.LastNameMaternal) ? null : request.LastNameMaternal.Trim(),
-            IsActive = true,
-            MustChangePassword = false,
-            CreatedAt = DateTime.UtcNow
-        };
-
-        var createResult = await _userManager.CreateAsync(user, request.Password);
-        if (!createResult.Succeeded)
-        {
-            var createMessage = string.Join(" ", createResult.Errors.Select(e => e.Description));
-            return BadRequest(new
-            {
-                message = string.IsNullOrWhiteSpace(createMessage)
-                    ? "No se pudo registrar la cuenta."
-                    : createMessage
-            });
-        }
-
-        var roleResult = await _userManager.AddToRoleAsync(user, "Cliente");
-        if (!roleResult.Succeeded)
-        {
-            await _userManager.DeleteAsync(user);
-            var roleMessage = string.Join(" ", roleResult.Errors.Select(e => e.Description));
-            return StatusCode(StatusCodes.Status500InternalServerError, new
-            {
-                message = string.IsNullOrWhiteSpace(roleMessage)
-                    ? "No se pudo asignar el rol de cliente."
-                    : roleMessage
-            });
-        }
-
         try
         {
-            var existingClient = await _dbContext.Clients.FirstOrDefaultAsync(c => c.Email == email);
-            if (existingClient is null)
+            var email = request.Email.Trim();
+            var existingUser = await _userManager.FindByEmailAsync(email);
+            if (existingUser is not null)
             {
-                _dbContext.Clients.Add(new Client
+                return Conflict(new { message = "Ya existe una cuenta con ese correo." });
+            }
+
+            var user = new ApplicationUser
+            {
+                UserName = email,
+                Email = email,
+                EmailConfirmed = true,
+                FirstName = request.FirstName.Trim(),
+                LastNamePaternal = request.LastNamePaternal.Trim(),
+                LastNameMaternal = string.IsNullOrWhiteSpace(request.LastNameMaternal) ? null : request.LastNameMaternal.Trim(),
+                IsActive = true,
+                MustChangePassword = false,
+                CreatedAt = DateTime.UtcNow
+            };
+
+            var createResult = await _userManager.CreateAsync(user, request.Password);
+            if (!createResult.Succeeded)
+            {
+                var createMessage = string.Join(" ", createResult.Errors.Select(e => e.Description));
+                return BadRequest(new
                 {
-                    FullName = user.FullName,
-                    Email = email,
-                    RegisteredAt = DateTime.UtcNow,
-                    IsActive = true
+                    message = string.IsNullOrWhiteSpace(createMessage)
+                        ? "No se pudo registrar la cuenta."
+                        : createMessage
                 });
             }
-            else
+
+            var roleResult = await _userManager.AddToRoleAsync(user, "Cliente");
+            if (!roleResult.Succeeded)
             {
-                existingClient.FullName = user.FullName;
-                existingClient.IsActive = true;
+                await _userManager.DeleteAsync(user);
+                var roleMessage = string.Join(" ", roleResult.Errors.Select(e => e.Description));
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    message = string.IsNullOrWhiteSpace(roleMessage)
+                        ? "No se pudo asignar el rol de cliente."
+                        : roleMessage
+                });
             }
 
-            await _dbContext.SaveChangesAsync();
-        }
-        catch (DbUpdateException ex)
-        {
-            _logger.LogError(ex, "Error guardando cliente de registro movil para {Email}", email);
-            await _userManager.DeleteAsync(user);
-            return StatusCode(StatusCodes.Status500InternalServerError, new
+            try
             {
-                message = "No se pudo completar el registro en este momento."
-            });
-        }
+                var existingClient = await _dbContext.Clients.FirstOrDefaultAsync(c => c.Email == email);
+                if (existingClient is null)
+                {
+                    _dbContext.Clients.Add(new Client
+                    {
+                        FullName = user.FullName,
+                        Email = email,
+                        RegisteredAt = DateTime.UtcNow,
+                        IsActive = true
+                    });
+                }
+                else
+                {
+                    existingClient.FullName = user.FullName;
+                    existingClient.IsActive = true;
+                }
 
-        try
-        {
-            return Ok(BuildLoginResponse(user));
+                await _dbContext.SaveChangesAsync();
+            }
+            catch (DbUpdateException ex)
+            {
+                _logger.LogError(ex, "Error guardando cliente de registro movil para {Email}", email);
+                await _userManager.DeleteAsync(user);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    message = "No se pudo completar el registro en este momento."
+                });
+            }
+
+            try
+            {
+                return Ok(BuildLoginResponse(user));
+            }
+            catch (Exception ex)
+            {
+                _logger.LogError(ex, "Error generando token JWT tras registro movil para {Email}", email);
+                return StatusCode(StatusCodes.Status500InternalServerError, new
+                {
+                    message = "Registro completado, pero hubo un error de configuracion JWT. Intenta iniciar sesion mas tarde."
+                });
+            }
         }
         catch (Exception ex)
         {
-            _logger.LogError(ex, "Error generando token JWT tras registro movil para {Email}", email);
+            _logger.LogError(ex, "Error inesperado en registro movil para {Email}", request.Email);
             return StatusCode(StatusCodes.Status500InternalServerError, new
             {
-                message = "Registro completado, pero hubo un error de configuracion JWT. Intenta iniciar sesion mas tarde."
+                message = "Error interno al registrar la cuenta."
             });
         }
     }

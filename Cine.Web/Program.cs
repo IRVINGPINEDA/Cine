@@ -2,6 +2,7 @@ using System.Text;
 using Cine.Web.Data;
 using Cine.Web.Models;
 using Cine.Web.Options;
+using Microsoft.AspNetCore.Diagnostics;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.HttpOverrides;
@@ -70,7 +71,29 @@ var app = builder.Build();
 
 if (!app.Environment.IsDevelopment())
 {
-    app.UseExceptionHandler("/Home/Error");
+    app.UseExceptionHandler(errorApp =>
+    {
+        errorApp.Run(async context =>
+        {
+            var exceptionFeature = context.Features.Get<IExceptionHandlerFeature>();
+            var logger = context.RequestServices.GetRequiredService<ILoggerFactory>().CreateLogger("GlobalExceptionHandler");
+
+            if (exceptionFeature?.Error is not null)
+            {
+                logger.LogError(exceptionFeature.Error, "Unhandled exception for {Path}", context.Request.Path);
+            }
+
+            if (context.Request.Path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase))
+            {
+                context.Response.StatusCode = StatusCodes.Status500InternalServerError;
+                context.Response.ContentType = "application/json; charset=utf-8";
+                await context.Response.WriteAsJsonAsync(new { message = "Error interno del servidor." });
+                return;
+            }
+
+            context.Response.Redirect("/Home/Error");
+        });
+    });
     app.UseHsts();
 }
 
