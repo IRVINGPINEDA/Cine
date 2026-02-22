@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("Cine.Web")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3b2f9294cac4a34de4db71f90b5229347dcda813")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+b64a293afe16034e4982f9e534c6a1a70cb6ecca")]
 [assembly: System.Reflection.AssemblyProductAttribute("Cine.Web")]
 [assembly: System.Reflection.AssemblyTitleAttribute("Cine.Web")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -79,6 +79,29 @@ app.UseHttpsRedirection();
 app.UseStaticFiles();
 app.UseRouting();
 app.UseAuthentication();
+app.Use(async (context, next) =>
+{
+    if (context.User.Identity?.IsAuthenticated == true)
+    {
+        var path = context.Request.Path;
+        var isAccountChangePassword = path.StartsWithSegments("/Account/ChangePasswordRequired", StringComparison.OrdinalIgnoreCase);
+        var isLogout = path.StartsWithSegments("/Account/Logout", StringComparison.OrdinalIgnoreCase);
+        var isApi = path.StartsWithSegments("/api", StringComparison.OrdinalIgnoreCase);
+
+        if (!isAccountChangePassword && !isLogout && !isApi)
+        {
+            var userManager = context.RequestServices.GetRequiredService<UserManager<ApplicationUser>>();
+            var currentUser = await userManager.GetUserAsync(context.User);
+            if (currentUser?.MustChangePassword == true)
+            {
+                context.Response.Redirect("/Account/ChangePasswordRequired");
+                return;
+            }
+        }
+    }
+
+    await next();
+});
 app.UseAuthorization();
 
 var seedDemoData = builder.Configuration.GetValue<bool?>("Seeding:SeedDemoData") ?? app.Environment.IsDevelopment();

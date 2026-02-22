@@ -21,10 +21,16 @@ public class AccountController : Controller
 
     [HttpGet]
     [AllowAnonymous]
-    public IActionResult Login()
+    public async Task<IActionResult> Login()
     {
         if (User.Identity?.IsAuthenticated == true)
         {
+            var currentUser = await _userManager.GetUserAsync(User);
+            if (currentUser?.MustChangePassword == true)
+            {
+                return RedirectToAction(nameof(ChangePasswordRequired));
+            }
+
             if (User.IsInRole("Admin"))
             {
                 return RedirectToAction("Index", "Admin");
@@ -65,20 +71,67 @@ public class AccountController : Controller
             return View(model);
         }
 
-        var roles = await _userManager.GetRolesAsync(user);
-        if (roles.Contains("Admin"))
+        if (user.MustChangePassword)
         {
-            return RedirectToAction("Index", "Admin");
+            return RedirectToAction(nameof(ChangePasswordRequired));
         }
 
-        if (roles.Contains("Cliente"))
+        return await RedirectByRoleAsync(user);
+    }
+
+    [HttpGet]
+    [Authorize]
+    public async Task<IActionResult> ChangePasswordRequired()
+    {
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
         {
-            return RedirectToAction("Index", "Catalog");
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
         }
 
-        await _signInManager.SignOutAsync();
-        ModelState.AddModelError(string.Empty, "El usuario no tiene un rol valido.");
-        return View(model);
+        if (!user.MustChangePassword)
+        {
+            return await RedirectByRoleAsync(user);
+        }
+
+        return View(new ChangePasswordRequiredViewModel());
+    }
+
+    [HttpPost]
+    [Authorize]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ChangePasswordRequired(ChangePasswordRequiredViewModel model)
+    {
+        if (!ModelState.IsValid)
+        {
+            return View(model);
+        }
+
+        var user = await _userManager.GetUserAsync(User);
+        if (user is null)
+        {
+            await _signInManager.SignOutAsync();
+            return RedirectToAction(nameof(Login));
+        }
+
+        var result = await _userManager.ChangePasswordAsync(user, model.CurrentPassword, model.NewPassword);
+        if (!result.Succeeded)
+        {
+            foreach (var error in result.Errors)
+            {
+                ModelState.AddModelError(string.Empty, error.Description);
+            }
+
+            return View(model);
+        }
+
+        user.MustChangePassword = false;
+        await _userManager.UpdateAsync(user);
+        await _signInManager.RefreshSignInAsync(user);
+
+        TempData["Success"] = "Contrasena actualizada correctamente.";
+        return await RedirectByRoleAsync(user);
     }
 
     [HttpPost]
@@ -95,6 +148,24 @@ public class AccountController : Controller
     public IActionResult AccessDenied()
     {
         return View();
+    }
+
+    private async Task<IActionResult> RedirectByRoleAsync(ApplicationUser user)
+    {
+        var roles = await _userManager.GetRolesAsync(user);
+        if (roles.Contains("Admin"))
+        {
+            return RedirectToAction("Index", "Admin");
+        }
+
+        if (roles.Contains("Cliente"))
+        {
+            return RedirectToAction("Index", "Catalog");
+        }
+
+        await _signInManager.SignOutAsync();
+        TempData["Error"] = "El usuario no tiene un rol valido.";
+        return RedirectToAction(nameof(Login));
     }
 }
 

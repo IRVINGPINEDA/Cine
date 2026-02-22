@@ -72,9 +72,11 @@ public class MobileApiClient : IMobileApiClient
         CancellationToken cancellationToken)
     {
         string? connectivityError = null;
+        string? lastAttemptedBaseUrl = null;
 
         foreach (var baseUrl in _apiSettings.GetBaseUrlCandidates())
         {
+            lastAttemptedBaseUrl = baseUrl;
             _apiSettings.BaseUrl = baseUrl;
 
             try
@@ -102,7 +104,9 @@ public class MobileApiClient : IMobileApiClient
             }
             catch (TaskCanceledException)
             {
-                connectivityError = "La solicitud al API excedio el tiempo limite.";
+                connectivityError =
+                    $"La solicitud al API excedio el tiempo limite ({lastAttemptedBaseUrl}). " +
+                    "Verifica DNS/cache de tu red para caleiro.online.";
             }
             catch (UriFormatException)
             {
@@ -110,11 +114,11 @@ public class MobileApiClient : IMobileApiClient
             }
             catch (JsonException)
             {
-                connectivityError = "El API respondio con un formato inesperado.";
+                connectivityError = $"El API respondio con un formato inesperado ({lastAttemptedBaseUrl}).";
             }
             catch (Exception)
             {
-                connectivityError = "Ocurrio un error inesperado al conectar con el API.";
+                connectivityError = $"Ocurrio un error inesperado al conectar con el API ({lastAttemptedBaseUrl}).";
             }
         }
 
@@ -129,9 +133,11 @@ public class MobileApiClient : IMobileApiClient
             throw new UnauthorizedAccessException("No hay sesion activa.");
         }
         Exception? lastConnectivityException = null;
+        string? lastAttemptedBaseUrl = null;
 
         foreach (var baseUrl in _apiSettings.GetBaseUrlCandidates())
         {
+            lastAttemptedBaseUrl = baseUrl;
             _apiSettings.BaseUrl = baseUrl;
 
             try
@@ -177,10 +183,11 @@ public class MobileApiClient : IMobileApiClient
 
         if (lastConnectivityException is TaskCanceledException)
         {
-            throw new InvalidOperationException("La solicitud al API excedio el tiempo limite.");
+            throw new InvalidOperationException(
+                $"La solicitud al API excedio el tiempo limite ({lastAttemptedBaseUrl}). Verifica DNS/cache de tu red.");
         }
 
-        throw new InvalidOperationException("No fue posible conectarse al API.");
+        throw new InvalidOperationException($"No fue posible conectarse al API ({lastAttemptedBaseUrl}).");
     }
 
     public Task LogoutAsync()

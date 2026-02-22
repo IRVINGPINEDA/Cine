@@ -75,6 +75,7 @@ public class AdminUsersController : Controller
             LastNamePaternal = model.LastNamePaternal,
             LastNameMaternal = model.LastNameMaternal,
             IsActive = true,
+            MustChangePassword = true,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -103,6 +104,7 @@ public class AdminUsersController : Controller
 
         TempData["Success"] = "Usuario creado correctamente.";
         TempData["GeneratedPassword"] = generatedPassword;
+        TempData["GeneratedPasswordEmail"] = user.Email;
         return RedirectToAction(nameof(Index));
     }
 
@@ -226,6 +228,41 @@ public class AdminUsersController : Controller
 
         await _userManager.DeleteAsync(user);
         TempData["Success"] = "Usuario eliminado.";
+        return RedirectToAction(nameof(Index));
+    }
+
+    [HttpPost("ResetPassword/{id}")]
+    [ValidateAntiForgeryToken]
+    public async Task<IActionResult> ResetPassword(string id)
+    {
+        var user = await _userManager.FindByIdAsync(id);
+        if (user is null)
+        {
+            return NotFound();
+        }
+
+        var generatedPassword = GenerateRandomPassword();
+        var resetToken = await _userManager.GeneratePasswordResetTokenAsync(user);
+        var resetResult = await _userManager.ResetPasswordAsync(user, resetToken, generatedPassword);
+        if (!resetResult.Succeeded)
+        {
+            foreach (var error in resetResult.Errors)
+            {
+                TempData["Success"] = null;
+                TempData["GeneratedPassword"] = null;
+                TempData["GeneratedPasswordEmail"] = null;
+                TempData["Error"] = error.Description;
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        user.MustChangePassword = true;
+        await _userManager.UpdateAsync(user);
+
+        TempData["Success"] = "Contrasena temporal regenerada correctamente.";
+        TempData["GeneratedPassword"] = generatedPassword;
+        TempData["GeneratedPasswordEmail"] = user.Email;
         return RedirectToAction(nameof(Index));
     }
 

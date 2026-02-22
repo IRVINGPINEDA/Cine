@@ -73,6 +73,14 @@ public class MobileAuthController : ControllerBase
             });
         }
 
+        if (user.MustChangePassword)
+        {
+            return StatusCode(StatusCodes.Status403Forbidden, new
+            {
+                message = "Debes cambiar tu contrasena temporal desde la web antes de usar la app movil."
+            });
+        }
+
         try
         {
             return Ok(BuildLoginResponse(user));
@@ -111,6 +119,7 @@ public class MobileAuthController : ControllerBase
             LastNamePaternal = request.LastNamePaternal.Trim(),
             LastNameMaternal = string.IsNullOrWhiteSpace(request.LastNameMaternal) ? null : request.LastNameMaternal.Trim(),
             IsActive = true,
+            MustChangePassword = false,
             CreatedAt = DateTime.UtcNow
         };
 
@@ -141,13 +150,22 @@ public class MobileAuthController : ControllerBase
 
         try
         {
-            _dbContext.Clients.Add(new Client
+            var existingClient = await _dbContext.Clients.FirstOrDefaultAsync(c => c.Email == email);
+            if (existingClient is null)
             {
-                FullName = user.FullName,
-                Email = email,
-                RegisteredAt = DateTime.UtcNow,
-                IsActive = true
-            });
+                _dbContext.Clients.Add(new Client
+                {
+                    FullName = user.FullName,
+                    Email = email,
+                    RegisteredAt = DateTime.UtcNow,
+                    IsActive = true
+                });
+            }
+            else
+            {
+                existingClient.FullName = user.FullName;
+                existingClient.IsActive = true;
+            }
 
             await _dbContext.SaveChangesAsync();
         }

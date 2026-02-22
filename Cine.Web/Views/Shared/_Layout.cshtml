@@ -71,10 +71,23 @@
             </div>
         }
 
+        @if (TempData["Error"] is not null)
+        {
+            <div class="alert alert-danger alert-dismissible fade show" role="alert">
+                @TempData["Error"]
+                <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
+            </div>
+        }
+
         @if (TempData["GeneratedPassword"] is not null)
         {
             <div class="alert alert-warning alert-dismissible fade show" role="alert">
-                Clave generada: <strong>@TempData["GeneratedPassword"]</strong>
+                <div><strong>Clave temporal generada (mostrar una sola vez)</strong></div>
+                @if (TempData["GeneratedPasswordEmail"] is not null)
+                {
+                    <div>Usuario: <strong>@TempData["GeneratedPasswordEmail"]</strong></div>
+                }
+                <div>Clave: <strong>@TempData["GeneratedPassword"]</strong></div>
                 <button type="button" class="btn-close" data-bs-dismiss="alert"></button>
             </div>
         }
