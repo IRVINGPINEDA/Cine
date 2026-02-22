@@ -1,0 +1,15 @@
+# Secrets y configuracion local/produccion
+.env
+.env.*
+!.env.example
+
+# Archivos de llaves
+*.pem
+*.key
+
+# Logs temporales
+*.log
+
+.vs/
+bin/
+obj/

@@ -6,7 +6,11 @@ namespace Cine.Web.Data;
 
 public static class AppDbSeeder
 {
-    public static async Task InitializeAsync(IServiceProvider serviceProvider)
+    public static async Task InitializeAsync(
+        IServiceProvider serviceProvider,
+        bool seedDemoData,
+        string? bootstrapAdminEmail,
+        string? bootstrapAdminPassword)
     {
         using var scope = serviceProvider.CreateScope();
         var context = scope.ServiceProvider.GetRequiredService<AppDbContext>();
@@ -15,6 +19,13 @@ public static class AppDbSeeder
 
         await context.Database.MigrateAsync();
         await SeedRolesAsync(roleManager);
+        await SeedBootstrapAdminAsync(userManager, bootstrapAdminEmail, bootstrapAdminPassword);
+
+        if (!seedDemoData)
+        {
+            return;
+        }
+
         await SeedUsersAsync(userManager);
         await SeedMoviesAsync(context);
         await SeedClientsAsync(context);
@@ -50,6 +61,35 @@ public static class AppDbSeeder
             "Cliente",
             "Cliente",
             "Demo",
+            null);
+    }
+
+    private static async Task SeedBootstrapAdminAsync(
+        UserManager<ApplicationUser> userManager,
+        string? bootstrapAdminEmail,
+        string? bootstrapAdminPassword)
+    {
+        var hasEmail = !string.IsNullOrWhiteSpace(bootstrapAdminEmail);
+        var hasPassword = !string.IsNullOrWhiteSpace(bootstrapAdminPassword);
+
+        if (!hasEmail && !hasPassword)
+        {
+            return;
+        }
+
+        if (!hasEmail || !hasPassword)
+        {
+            throw new InvalidOperationException(
+                "Para crear el admin bootstrap se requieren Seeding:BootstrapAdminEmail y Seeding:BootstrapAdminPassword.");
+        }
+
+        await EnsureUserAsync(
+            userManager,
+            bootstrapAdminEmail!.Trim(),
+            bootstrapAdminPassword!,
+            "Admin",
+            "Admin",
+            "Bootstrap",
             null);
     }
 

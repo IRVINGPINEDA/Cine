@@ -1,24 +1,24 @@
 {
   "format": 1,
   "restore": {
-    "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj": {}
+    "C:\\Users\\irvin\\OneDrive\\Escritorio\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj": {}
   },
   "projects": {
-    "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj": {
+    "C:\\Users\\irvin\\OneDrive\\Escritorio\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj",
+        "projectUniqueName": "C:\\Users\\irvin\\OneDrive\\Escritorio\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj",
         "projectName": "AppStreamingMovil",
-        "projectPath": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj",
-        "packagesPath": "C:\\Users\\ferna\\.nuget\\packages\\",
-        "outputPath": "B:\\cosasEscuela\\UBAM\\CosasEscuela2026\\Nube\\Cine\\AppStreamingMovil\\AppStreamingMovil\\obj\\",
+        "projectPath": "C:\\Users\\irvin\\OneDrive\\Escritorio\\Cine\\AppStreamingMovil\\AppStreamingMovil\\AppStreamingMovil.csproj",
+        "packagesPath": "C:\\Users\\irvin\\.nuget\\packages\\",
+        "outputPath": "C:\\Users\\irvin\\OneDrive\\Escritorio\\Cine\\AppStreamingMovil\\AppStreamingMovil\\obj\\",
         "projectStyle": "PackageReference",
         "crossTargeting": true,
         "fallbackFolders": [
           "C:\\Program Files (x86)\\Microsoft Visual Studio\\Shared\\NuGetPackages"
         ],
         "configFilePaths": [
-          "C:\\Users\\ferna\\AppData\\Roaming\\NuGet\\NuGet.Config",
+          "C:\\Users\\irvin\\AppData\\Roaming\\NuGet\\NuGet.Config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.FallbackLocation.config",
           "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
         ],

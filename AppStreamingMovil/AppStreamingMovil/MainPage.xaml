@@ -1,62 +1,243 @@
-﻿<?xml version="1.0" encoding="utf-8" ?>
+<?xml version="1.0" encoding="utf-8" ?>
 <ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
-             x:Class="AppStreamingMovil.MainPage">
+             x:Class="AppStreamingMovil.MainPage"
+             Title="Cine Movil">
 
-    <ScrollView>
-        <VerticalStackLayout
-            Padding="24"
-            Spacing="20"
-            HorizontalOptions="Center"
-            VerticalOptions="Center">
+    <ContentPage.Background>
+        <LinearGradientBrush StartPoint="0,0" EndPoint="1,1">
+            <GradientStop Color="#08131F" Offset="0.0" />
+            <GradientStop Color="#0E1E2F" Offset="0.45" />
+            <GradientStop Color="#132A3F" Offset="1.0" />
+        </LinearGradientBrush>
+    </ContentPage.Background>
 
-            <Image
-                Source="dotnet_bot.png"
-                HeightRequest="160"
-                WidthRequest="160"
-                Aspect="AspectFit"
-                SemanticProperties.Description="dot net bot" />
+    <ContentPage.Resources>
+        <Style x:Key="CardBorderStyle" TargetType="Border">
+            <Setter Property="StrokeThickness" Value="1" />
+            <Setter Property="Stroke" Value="#2BFFFFFF" />
+            <Setter Property="Background" Value="#14FFFFFF" />
+            <Setter Property="Padding" Value="16" />
+            <Setter Property="Shadow">
+                <Setter.Value>
+                    <Shadow Brush="#70000000" Opacity="0.7" Radius="16" Offset="0,8" />
+                </Setter.Value>
+            </Setter>
+            <Setter Property="StrokeShape">
+                <Setter.Value>
+                    <RoundRectangle CornerRadius="18" />
+                </Setter.Value>
+            </Setter>
+        </Style>
 
-            <Frame
-                Padding="18"
-                CornerRadius="12"
-                HasShadow="True"
-                HorizontalOptions="Fill">
-                <VerticalStackLayout Spacing="12">
-                    <Label Text="Iniciar sesión" FontAttributes="Bold" FontSize="18" HorizontalOptions="Center" />
+        <Style x:Key="InputStyle" TargetType="Entry">
+            <Setter Property="TextColor" Value="White" />
+            <Setter Property="PlaceholderColor" Value="#90B5C7D6" />
+            <Setter Property="BackgroundColor" Value="#1AFFFFFF" />
+            <Setter Property="Margin" Value="0,2,0,0" />
+        </Style>
 
-                    <Label Text="Correo" />
-                    <Entry
-                        x:Name="correoCliente"
-                        Placeholder="ejemplo@correo.com"
-                        Keyboard="Email" />
+        <Style x:Key="PrimaryButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#14B8A6" />
+            <Setter Property="TextColor" Value="#062A28" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="FontAttributes" Value="Bold" />
+            <Setter Property="Padding" Value="14,12" />
+        </Style>
 
-                    <Label Text="Contraseña" />
-                    <Entry
-                        x:Name="contrasenaCliente"
-                        Placeholder="Ingrese su contraseña"
-                        IsPassword="True" />
+        <Style x:Key="SecondaryButtonStyle" TargetType="Button">
+            <Setter Property="BackgroundColor" Value="#1AFFFFFF" />
+            <Setter Property="TextColor" Value="#D8F6F2" />
+            <Setter Property="BorderColor" Value="#46FFFFFF" />
+            <Setter Property="BorderWidth" Value="1" />
+            <Setter Property="CornerRadius" Value="14" />
+            <Setter Property="Padding" Value="14,12" />
+        </Style>
+    </ContentPage.Resources>
 
-                    <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
-                        <CheckBox x:Name="mostrarContrasena" CheckedChanged="ShowPasswordChanged" />
-                        <Label Text="Mostrar contraseña" VerticalOptions="Center" />
-                    </HorizontalStackLayout>
+    <Grid>
+        <Grid.InputTransparent>False</Grid.InputTransparent>
 
-                    <Button
-                        x:Name="iniciarSesion"
-                        Text="Iniciar Sesión"
-                        Clicked="Sesion"
-                        HorizontalOptions="Fill" />
+        <Border Background="#1AFF8A65"
+                StrokeThickness="0"
+                WidthRequest="180"
+                HeightRequest="180"
+                HorizontalOptions="Start"
+                VerticalOptions="Start"
+                TranslationX="-55"
+                TranslationY="30">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="90" />
+            </Border.StrokeShape>
+        </Border>
+
+        <Border Background="#1A22D3EE"
+                StrokeThickness="0"
+                WidthRequest="220"
+                HeightRequest="220"
+                HorizontalOptions="End"
+                VerticalOptions="Center"
+                TranslationX="70"
+                TranslationY="-140">
+            <Border.StrokeShape>
+                <RoundRectangle CornerRadius="110" />
+            </Border.StrokeShape>
+        </Border>
+
+        <ScrollView>
+            <VerticalStackLayout Padding="20,18,20,28" Spacing="16">
+                <Border Style="{StaticResource CardBorderStyle}" Background="#22FFFFFF">
+                    <Grid ColumnDefinitions="*,Auto" RowDefinitions="Auto,Auto" ColumnSpacing="12">
+                        <Label Grid.Row="0"
+                               Grid.Column="0"
+                               Text="Cine Movil"
+                               TextColor="White"
+                               FontSize="28"
+                               FontAttributes="Bold" />
+
+                        <Border Grid.Row="0"
+                                Grid.Column="1"
+                                Background="#2234D399"
+                                Stroke="#5534D399"
+                                Padding="10,6"
+                                VerticalOptions="Start">
+                            <Border.StrokeShape>
+                                <RoundRectangle CornerRadius="20" />
+                            </Border.StrokeShape>
+                            <Label Text="Auto local"
+                                   FontSize="12"
+                                   FontAttributes="Bold"
+                                   TextColor="#9AF1DD" />
+                        </Border>
+
+                        <Label Grid.Row="1"
+                               Grid.ColumnSpan="2"
+                               Text="Conecta automaticamente a tu API local (Docker/Caddy o dotnet run) y muestra el catalogo con imagenes remotas."
+                               TextColor="#C7DEE8"
+                               FontSize="13"
+                               LineBreakMode="WordWrap" />
+                    </Grid>
+                </Border>
+
+                <Border x:Name="loginSection" Style="{StaticResource CardBorderStyle}">
+                    <VerticalStackLayout Spacing="12">
+                        <Label Text="Iniciar sesion"
+                               FontSize="20"
+                               FontAttributes="Bold"
+                               TextColor="White" />
+
+                        <Label Text="Cliente demo: cliente@demo.com / Cliente123!"
+                               TextColor="#B9D3DF"
+                               FontSize="12" />
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Correo" TextColor="#DCEAF0" FontSize="13" />
+                            <Entry x:Name="correoCliente"
+                                   Style="{StaticResource InputStyle}"
+                                   Placeholder="cliente@demo.com"
+                                   Keyboard="Email" />
+                        </VerticalStackLayout>
+
+                        <VerticalStackLayout Spacing="6">
+                            <Label Text="Contrasena" TextColor="#DCEAF0" FontSize="13" />
+                            <Entry x:Name="contrasenaCliente"
+                                   Style="{StaticResource InputStyle}"
+                                   Placeholder="Ingresa tu contrasena"
+                                   IsPassword="True" />
+                        </VerticalStackLayout>
+
+                        <HorizontalStackLayout Spacing="8" VerticalOptions="Center">
+                            <CheckBox x:Name="mostrarContrasena" CheckedChanged="ShowPasswordChanged" Color="#14B8A6" />
+                            <Label Text="Mostrar contrasena" VerticalOptions="Center" TextColor="#C7DEE8" />
+                        </HorizontalStackLayout>
+
+                        <Button x:Name="iniciarSesion"
+                                Text="Entrar al catalogo"
+                                Clicked="Sesion"
+                                Style="{StaticResource PrimaryButtonStyle}" />
+
+                        <Button x:Name="registrarseButton"
+                                Text="No tienes cuenta? Registrarse"
+                                Clicked="RegistrarseClicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                    </VerticalStackLayout>
+                </Border>
+
+                <Grid x:Name="loadingIndicatorContainer" IsVisible="False">
+                    <Border Style="{StaticResource CardBorderStyle}" Background="#1EFFFFFF" Padding="12">
+                        <HorizontalStackLayout Spacing="10" VerticalOptions="Center">
+                            <ActivityIndicator x:Name="loadingIndicator"
+                                               IsVisible="False"
+                                               IsRunning="False"
+                                               Color="#14B8A6" />
+                            <Label Text="Cargando..." TextColor="#D9ECF4" VerticalOptions="Center" />
+                        </HorizontalStackLayout>
+                    </Border>
+                </Grid>
+
+                <VerticalStackLayout x:Name="catalogSection" IsVisible="False" Spacing="12">
+                    <Grid ColumnDefinitions="*,*" ColumnSpacing="10">
+                        <Button Grid.Column="0"
+                                Text="Actualizar"
+                                Clicked="CargarCatalogoClicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                        <Button Grid.Column="1"
+                                Text="Cerrar sesion"
+                                Clicked="CerrarSesionClicked"
+                                Style="{StaticResource SecondaryButtonStyle}" />
+                    </Grid>
+
+                    <CollectionView x:Name="moviesCollectionView"
+                                    SelectionMode="None"
+                                    EmptyView="No hay peliculas activas para mostrar.">
+                        <CollectionView.ItemTemplate>
+                            <DataTemplate>
+                                <Border Style="{StaticResource CardBorderStyle}" Margin="0,0,0,12">
+                                    <VerticalStackLayout Spacing="10">
+                                        <Border Stroke="#22FFFFFF" StrokeThickness="1" Padding="0">
+                                            <Border.StrokeShape>
+                                                <RoundRectangle CornerRadius="14" />
+                                            </Border.StrokeShape>
+                                            <Image Source="{Binding ImageUrl}"
+                                                   HeightRequest="190"
+                                                   Aspect="AspectFill"
+                                                   BackgroundColor="#0B1620" />
+                                        </Border>
+
+                                        <Grid ColumnDefinitions="*,Auto" ColumnSpacing="8">
+                                            <Label Grid.Column="0"
+                                                   Text="{Binding Name}"
+                                                   FontSize="19"
+                                                   FontAttributes="Bold"
+                                                   TextColor="White"
+                                                   LineBreakMode="TailTruncation" />
+                                            <Border Grid.Column="1"
+                                                    Background="#1838BDF8"
+                                                    Stroke="#2A60A5FA"
+                                                    Padding="8,4">
+                                                <Border.StrokeShape>
+                                                    <RoundRectangle CornerRadius="12" />
+                                                </Border.StrokeShape>
+                                                <Label Text="{Binding Genre}" TextColor="#B8DEFF" FontSize="11" FontAttributes="Bold" />
+                                            </Border>
+                                        </Grid>
+
+                                        <Label Text="{Binding Description}"
+                                               TextColor="#D3E5EE"
+                                               FontSize="13"
+                                               LineBreakMode="WordWrap" />
+
+                                        <Button Text="Ver trailer"
+                                                Clicked="TrailerClicked"
+                                                CommandParameter="{Binding TrailerUrl}"
+                                                Style="{StaticResource PrimaryButtonStyle}" />
+                                    </VerticalStackLayout>
+                                </Border>
+                            </DataTemplate>
+                        </CollectionView.ItemTemplate>
+                    </CollectionView>
                 </VerticalStackLayout>
-            </Frame>
-
-            <Label Text="¿No tienes cuenta? Regístrate." TextColor="Fuchsia" TextDecorations="Underline" HorizontalOptions="Center">
-                <Label.GestureRecognizers>
-                    <TapGestureRecognizer Command="{Binding OpenUrlCommand}" CommandParameter="https://learn.microsoft.com/dotnet/maui/" />
-                </Label.GestureRecognizers>
-            </Label>
-
-        </VerticalStackLayout>
-    </ScrollView>
-
+            </VerticalStackLayout>
+        </ScrollView>
+    </Grid>
 </ContentPage>

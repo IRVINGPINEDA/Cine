@@ -196,3 +196,4 @@ C:\Users\irvin\OneDrive\Escritorio\Cine\Cine.Web\obj\Debug\net10.0\refint\Cine.W
 C:\Users\irvin\OneDrive\Escritorio\Cine\Cine.Web\obj\Debug\net10.0\Cine.Web.pdb
 C:\Users\irvin\OneDrive\Escritorio\Cine\Cine.Web\obj\Debug\net10.0\Cine.Web.genruntimeconfig.cache
 C:\Users\irvin\OneDrive\Escritorio\Cine\Cine.Web\obj\Debug\net10.0\ref\Cine.Web.dll
+C:\Users\irvin\OneDrive\Escritorio\Cine\Cine.Web\obj\Debug\net10.0\Cine.Web.sourcelink.json

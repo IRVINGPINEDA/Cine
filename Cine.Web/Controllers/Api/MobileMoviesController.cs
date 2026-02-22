@@ -36,7 +36,18 @@ public class MobileMoviesController : ControllerBase
             })
             .ToListAsync();
 
-        return Ok(movies);
+        var response = movies.Select(m => new
+        {
+            m.Id,
+            m.Name,
+            m.Genre,
+            m.Description,
+            m.ImagePath,
+            ImageUrl = BuildAbsoluteImageUrl(m.ImagePath),
+            m.TrailerUrl
+        });
+
+        return Ok(response);
     }
 
     [HttpGet("{id:int}")]
@@ -61,6 +72,26 @@ public class MobileMoviesController : ControllerBase
             return NotFound();
         }
 
-        return Ok(movie);
+        return Ok(new
+        {
+            movie.Id,
+            movie.Name,
+            movie.Genre,
+            movie.Description,
+            movie.ImagePath,
+            ImageUrl = BuildAbsoluteImageUrl(movie.ImagePath),
+            movie.TrailerUrl
+        });
+    }
+
+    private string? BuildAbsoluteImageUrl(string? imagePath)
+    {
+        if (string.IsNullOrWhiteSpace(imagePath))
+        {
+            return null;
+        }
+
+        var baseUri = $"{Request.Scheme}://{Request.Host}";
+        return $"{baseUri}{imagePath}";
     }
 }

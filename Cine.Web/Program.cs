@@ -80,7 +80,11 @@ app.UseRouting();
 app.UseAuthentication();
 app.UseAuthorization();
 
-await AppDbSeeder.InitializeAsync(app.Services);
+var seedDemoData = builder.Configuration.GetValue<bool?>("Seeding:SeedDemoData") ?? app.Environment.IsDevelopment();
+var bootstrapAdminEmail = builder.Configuration["Seeding:BootstrapAdminEmail"];
+var bootstrapAdminPassword = builder.Configuration["Seeding:BootstrapAdminPassword"];
+
+await AppDbSeeder.InitializeAsync(app.Services, seedDemoData, bootstrapAdminEmail, bootstrapAdminPassword);
 
 app.MapControllers();
 app.MapControllerRoute(

@@ -1,4 +1,6 @@
-﻿using Microsoft.Extensions.Logging;
+using AppStreamingMovil.Configuration;
+using AppStreamingMovil.Services;
+using Microsoft.Extensions.Logging;
 
 namespace AppStreamingMovil
 {
@@ -15,8 +17,13 @@ namespace AppStreamingMovil
                     fonts.AddFont("OpenSans-Semibold.ttf", "OpenSansSemibold");
                 });
 
+            builder.Services.AddSingleton<ApiSettings>();
+            builder.Services.AddSingleton<IMobileApiClient, MobileApiClient>();
+            builder.Services.AddSingleton<MainPage>();
+            builder.Services.AddSingleton<AppShell>();
+
 #if DEBUG
-    		builder.Logging.AddDebug();
+            builder.Logging.AddDebug();
 #endif
 
             return builder.Build();

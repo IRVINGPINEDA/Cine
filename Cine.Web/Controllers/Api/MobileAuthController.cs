@@ -1,6 +1,7 @@
-﻿using System.IdentityModel.Tokens.Jwt;
+using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
+using Cine.Web.Data;
 using Cine.Web.Models;
 using Cine.Web.Models.Api;
 using Cine.Web.Options;
@@ -18,13 +19,16 @@ namespace Cine.Web.Controllers.Api;
 public class MobileAuthController : ControllerBase
 {
     private readonly UserManager<ApplicationUser> _userManager;
+    private readonly AppDbContext _dbContext;
     private readonly JwtOptions _jwtOptions;
 
     public MobileAuthController(
         UserManager<ApplicationUser> userManager,
+        AppDbContext dbContext,
         IOptions<JwtOptions> jwtOptions)
     {
         _userManager = userManager;
+        _dbContext = dbContext;
         _jwtOptions = jwtOptions.Value;
     }
 
@@ -65,20 +69,72 @@ public class MobileAuthController : ControllerBase
             });
         }
 
-        var expiresAt = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiresMinutes);
-        var token = GenerateJwtToken(user, expiresAt);
+        return Ok(BuildLoginResponse(user));
+    }
 
-        return Ok(new MobileLoginResponse
+    [HttpPost("register")]
+    public async Task<IActionResult> Register([FromBody] MobileRegisterRequest request)
+    {
+        if (!ModelState.IsValid)
         {
-            Token = token,
-            ExpiresAt = expiresAt,
-            User = new MobileLoginUser
+            return ValidationProblem(ModelState);
+        }
+
+        var email = request.Email.Trim();
+        var existingUser = await _userManager.FindByEmailAsync(email);
+        if (existingUser is not null)
+        {
+            return Conflict(new { message = "Ya existe una cuenta con ese correo." });
+        }
+
+        var user = new ApplicationUser
+        {
+            UserName = email,
+            Email = email,
+            EmailConfirmed = true,
+            FirstName = request.FirstName.Trim(),
+            LastNamePaternal = request.LastNamePaternal.Trim(),
+            LastNameMaternal = string.IsNullOrWhiteSpace(request.LastNameMaternal) ? null : request.LastNameMaternal.Trim(),
+            IsActive = true,
+            CreatedAt = DateTime.UtcNow
+        };
+
+        var createResult = await _userManager.CreateAsync(user, request.Password);
+        if (!createResult.Succeeded)
+        {
+            var createMessage = string.Join(" ", createResult.Errors.Select(e => e.Description));
+            return BadRequest(new
             {
-                Id = user.Id,
-                Email = user.Email ?? string.Empty,
-                Role = "Cliente"
-            }
+                message = string.IsNullOrWhiteSpace(createMessage)
+                    ? "No se pudo registrar la cuenta."
+                    : createMessage
+            });
+        }
+
+        var roleResult = await _userManager.AddToRoleAsync(user, "Cliente");
+        if (!roleResult.Succeeded)
+        {
+            await _userManager.DeleteAsync(user);
+            var roleMessage = string.Join(" ", roleResult.Errors.Select(e => e.Description));
+            return StatusCode(StatusCodes.Status500InternalServerError, new
+            {
+                message = string.IsNullOrWhiteSpace(roleMessage)
+                    ? "No se pudo asignar el rol de cliente."
+                    : roleMessage
+            });
+        }
+
+        _dbContext.Clients.Add(new Client
+        {
+            FullName = user.FullName,
+            Email = email,
+            RegisteredAt = DateTime.UtcNow,
+            IsActive = true
         });
+
+        await _dbContext.SaveChangesAsync();
+
+        return Ok(BuildLoginResponse(user));
     }
 
     private string GenerateJwtToken(ApplicationUser user, DateTime expiresAt)
@@ -105,5 +161,22 @@ public class MobileAuthController : ControllerBase
 
         return new JwtSecurityTokenHandler().WriteToken(token);
     }
-}
 
+    private MobileLoginResponse BuildLoginResponse(ApplicationUser user)
+    {
+        var expiresAt = DateTime.UtcNow.AddMinutes(_jwtOptions.ExpiresMinutes);
+        var token = GenerateJwtToken(user, expiresAt);
+
+        return new MobileLoginResponse
+        {
+            Token = token,
+            ExpiresAt = expiresAt,
+            User = new MobileLoginUser
+            {
+                Id = user.Id,
+                Email = user.Email ?? string.Empty,
+                Role = "Cliente"
+            }
+        };
+    }
+}
